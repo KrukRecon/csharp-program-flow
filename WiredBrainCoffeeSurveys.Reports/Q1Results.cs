@@ -20,6 +20,8 @@ namespace WiredBrainCoffeeSurveys.Reports
         public static string FavoriteProduct { get; set; } = "Cappucino";
 
         public static string LeastFavoriteProduct { get; set; } = "Granola";
+        
+        public static string AreaToImprove { get; set; } = "MobileApp";
 
         // Aggregate counts
         public static double NumberSurveyed { get; set; } = 500;
