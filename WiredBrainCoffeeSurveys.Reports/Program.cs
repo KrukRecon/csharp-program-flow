@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace WiredBrainCoffeeSurveys.Reports
 {
@@ -7,7 +8,59 @@ namespace WiredBrainCoffeeSurveys.Reports
     {
         static void Main(string[] args)
         {
+            GeneratingWinnerEmails();
             GenerateTasksReport();
+            GenerateCommentsReport();
+        }
+
+        public static void GeneratingWinnerEmails()
+        {
+            var selectedEmails = new List<string>();
+            int counter = 0;
+
+            Console.WriteLine(Environment.NewLine + "Selected Winners Output: ");
+            while (selectedEmails.Count < 2 && counter < Q1Results.Responses.Count)
+            {
+                var currentItem = Q1Results.Responses[counter];
+
+                if (currentItem.FavoriteProduct == "Cappucino")
+                {
+                    selectedEmails.Add(currentItem.EmailAddress);
+                    Console.WriteLine(currentItem.EmailAddress);
+                }
+
+                counter++;
+            }
+
+            File.WriteAllLines("WinnersReport.csv", selectedEmails);
+        }
+
+        public static void GenerateCommentsReport()
+        {
+            var comments = new List<string>();
+
+            Console.WriteLine(Environment.NewLine + "Comments output: ");
+            for (int i = 0; i < Q1Results.Responses.Count; i++)
+            {
+                var currentResponse = Q1Results.Responses[i];
+
+                if (currentResponse.WouldRecommend < 7)
+                {
+                    Console.WriteLine(currentResponse.Comments);
+                    comments.Add(currentResponse.Comments);
+                }
+            }
+
+            foreach (var response in Q1Results.Responses)
+            {
+                if (response.AreaToImprove == Q1Results.AreaToImprove)
+                {
+                    Console.WriteLine(response.Comments);
+                    comments.Add(response.Comments);
+                }
+            }
+
+            File.WriteAllLines("CommentsReport.csv", comments);
         }
 
         public static void GenerateTasksReport()
@@ -61,6 +114,14 @@ namespace WiredBrainCoffeeSurveys.Reports
                     tasks.Add("Investigate individual comments for ideas");
                     break;
             }
+
+            Console.WriteLine(Environment.NewLine + "Tasks output: ");
+            foreach (var task in tasks)
+            {
+                Console.WriteLine(task);
+            }
+
+            File.WriteAllLines("TasksReport.csv", tasks);
         }
     }
 }
