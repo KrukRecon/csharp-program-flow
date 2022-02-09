@@ -8,9 +8,32 @@ namespace WiredBrainCoffeeSurveys.Reports
     {
         static void Main(string[] args)
         {
-            GeneratingWinnerEmails();
-            GenerateTasksReport();
-            GenerateCommentsReport();
+            bool quitApp = false;
+
+            do
+            {
+                Console.WriteLine("Please specify a report to run (rewards, comments, tasks, quit): ");
+                var selectedReport = Console.ReadLine();
+
+                switch (selectedReport)
+                {
+                    case "rewards":
+                        GeneratingWinnerEmails();
+                        break;
+                    case "comments":
+                        GenerateCommentsReport();
+                        break;
+                    case "tasks":
+                        GenerateTasksReport();
+                        break;
+                    case "quit":
+                        quitApp = true;
+                        break;
+                    default:
+                        Console.WriteLine("Sorry, that's not a valid option");
+                        break;
+                }
+            } while (!quitApp);
         }
 
         public static void GeneratingWinnerEmails()
